@@ -17,6 +17,7 @@ import com.sheilajnieto.frasescelebresapi.api.IApiService;
 import com.sheilajnieto.frasescelebresapi.api.RestClient;
 import com.sheilajnieto.frasescelebresapi.modelos.Categoria;
 import com.sheilajnieto.frasescelebresapi.modelos.Frase;
+import com.sheilajnieto.frasescelebresapi.modelos.adaptadores.AdaptadorAutor;
 import com.sheilajnieto.frasescelebresapi.modelos.adaptadores.AdaptadorCategoria;
 import com.sheilajnieto.frasescelebresapi.modelos.adaptadores.AdaptadorFrase;
 
@@ -50,32 +51,31 @@ public class ActividadMostrarFrasesPorAutor extends AppCompatActivity {
     }
 
     private void obtenerFrasesPorAutor(int idAutorSeleccionado) {
-        Call<List<Frase>> call = apiService.obtenerFrasesPorAutor(idAutorSeleccionado);
-        call.enqueue(new Callback<List<Frase>>() {
+        apiService.obtenerFrasesPorAutor(idAutorSeleccionado).enqueue(new Callback<List<Frase>>() {
             @Override
             public void onResponse(Call<List<Frase>> call, Response<List<Frase>> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     listaFrasesPorAutor = response.body();
+                    Log.d("FRASES OBTENIDAS DE AUTOR", "Cantidad: " + listaFrasesPorAutor.size());
+                    mostrarFrasesPorAutor(listaFrasesPorAutor);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Frase>> call, Throwable t) {
                 Log.d("RETROFIT", "Error al obtener frases por autor: " + t.getMessage());
+                String url = call.request().url().toString();
+                Log.d("RETROFIT", "URL de la llamada al listado por autor: " + url);
             }
         });
-
-        mostrarFrasesPorAutor(listaFrasesPorAutor);
     }
 
     public void mostrarFrasesPorAutor(List<Frase> listaFrasesPorAutor) {
-        obtenerFrasesPorAutor(idAutorSeleccionado);
         recView = findViewById(R.id.recView);
-        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        adaptadorFrase = new AdaptadorFrase(listaFrasesPorAutor);
+        recView.setAdapter(adaptadorFrase);
         recView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recView.setHasFixedSize(true);
-
-        AdaptadorFrase adaptador = new AdaptadorFrase(listaFrasesPorAutor);
-        recView.setAdapter(adaptador);
+        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 }

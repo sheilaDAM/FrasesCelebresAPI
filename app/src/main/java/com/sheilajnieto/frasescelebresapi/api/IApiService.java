@@ -29,9 +29,8 @@ public interface IApiService {
     @GET("frase/autor/1/{id}")
     public Call<List<Frase>> obtenerFrasesPorAutor(@Path("id") int idAutor);
 
-
     @GET("categoria/{id}")
-    public Call<Categoria> obtenerFrasesPorCategoria(@Path("id") int id);
+    public Call<List<Frase>> obtenerFrasesPorCategoria(@Path("id") int id);
 
     @GET("frase/dia/{fecha}")
     Call<Frase> obtenerFraseDelDia(@Path("fecha") String fecha);

@@ -45,22 +45,21 @@ public class ActividadMostrarFrasesPorCategoria extends AppCompatActivity {
     }
 
     private void obtenerFrasesPorCategoria(int idCategoriaSeleccionada) {
-        Call<List<Frase>> call = apiService.obtenerFrasesPorAutor(idCategoriaSeleccionada);
-        call.enqueue(new Callback<List<Frase>>() {
+       apiService.obtenerFrasesPorCategoria(idCategoriaSeleccionada).enqueue(new Callback<List<Frase>>() {
             @Override
             public void onResponse(Call<List<Frase>> call, Response<List<Frase>> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     listaFrasesPorCategoria = response.body();
+                    Log.d("FRASES OBTENIDAS DE CATEGORIA", "Cantidad: " + listaFrasesPorCategoria.size());
+                    mostrarFrasesPorCategoria(listaFrasesPorCategoria);
                 }
             }
-
             @Override
             public void onFailure(Call<List<Frase>> call, Throwable t) {
-                Log.d("RETROFIT", "Error al obtener frases por categoría: " + t.getMessage());
+                Log.d("FRASES OBTENIDAS DE CATEGORIA", "Error al obtener las frases de la categoria: " + t.getMessage());
             }
         });
 
-        mostrarFrasesPorCategoria(listaFrasesPorCategoria);
     }
 
     public void mostrarFrasesPorCategoria(List<Frase> listaFrasesPorAutor) {

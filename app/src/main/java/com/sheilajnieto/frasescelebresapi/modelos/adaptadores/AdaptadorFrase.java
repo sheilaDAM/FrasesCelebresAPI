@@ -21,8 +21,6 @@ import java.util.List;
 public class AdaptadorFrase extends RecyclerView.Adapter<AdaptadorFrase.ListViewHolder> {
 
     private final List<Frase> frases;
-    //private final IOnClickListener listener;
-
 
     public AdaptadorFrase(List<Frase> frases) {
         this.frases = frases;
@@ -39,7 +37,7 @@ public class AdaptadorFrase extends RecyclerView.Adapter<AdaptadorFrase.ListView
     @Override
     public void onBindViewHolder(@NonNull AdaptadorFrase.ListViewHolder holder, int position) {
         Frase frase = frases.get(position);
-        holder.bindCategory(frase, position);
+        holder.bindCategory(frase);
     }
 
 
@@ -48,7 +46,7 @@ public class AdaptadorFrase extends RecyclerView.Adapter<AdaptadorFrase.ListView
         return frases.size();
     }
 
-    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ListViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvFrase;
         private final Context context;
@@ -58,25 +56,13 @@ public class AdaptadorFrase extends RecyclerView.Adapter<AdaptadorFrase.ListView
             this.context = itemview.getContext();
             this.tvFrase = itemview.findViewById(R.id.tvFrase);
 
-            itemview.setOnClickListener(this);
+        }
+
+        public void bindCategory(Frase frase) {
+            tvFrase.setText(frase.getTexto());
 
         }
 
-        public void bindCategory(Frase frase, int position) {
-            tvFrase.setText(frases.get(position).getTexto());
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            /*
-            if (listener != null) {
-                listener.onCategoryClicked(getAdapterPosition());
-            }
-
-             */
-
-        }
 
     }
 }

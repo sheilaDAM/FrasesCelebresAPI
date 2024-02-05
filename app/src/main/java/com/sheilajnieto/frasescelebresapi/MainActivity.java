@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Frase> call, Response<Frase> response) {
                 if (response.isSuccessful()) {
                     Log.d("FRASE DEL DÍA", "Frase del día obtenida de la api rest: " + response.body().getTexto());
-                    mostrarDialogoFraseDelDia(response.body()); 
+                    mostrarDialogoFraseDelDia(response.body());
                 }
             }
 
