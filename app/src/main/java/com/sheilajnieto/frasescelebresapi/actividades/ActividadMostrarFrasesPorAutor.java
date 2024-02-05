@@ -30,10 +30,10 @@ import retrofit2.Response;
 public class ActividadMostrarFrasesPorAutor extends AppCompatActivity {
 
     private RecyclerView recView;
-    private AdaptadorFrase adaptadorFrase;
     private int idAutorSeleccionado;
     private List<Frase> listaFrasesPorAutor;
     private IApiService apiService;
+    private AdaptadorFrase adaptadorFrase;
 
 
     @Override
@@ -46,6 +46,13 @@ public class ActividadMostrarFrasesPorAutor extends AppCompatActivity {
 
         apiService = RestClient.getApiServiceInstance();
 
+        recView = findViewById(R.id.recView);
+        adaptadorFrase = new AdaptadorFrase(listaFrasesPorAutor);
+        recView.setAdapter(adaptadorFrase);
+        recView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recView.setHasFixedSize(true);
+        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
         obtenerFrasesPorAutor(idAutorSeleccionado);
 
     }
@@ -57,7 +64,7 @@ public class ActividadMostrarFrasesPorAutor extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     listaFrasesPorAutor = response.body();
                     Log.d("FRASES OBTENIDAS DE AUTOR", "Cantidad: " + listaFrasesPorAutor.size());
-                    mostrarFrasesPorAutor(listaFrasesPorAutor);
+                    adaptadorFrase.setData(listaFrasesPorAutor);
                 }
             }
 
@@ -68,14 +75,5 @@ public class ActividadMostrarFrasesPorAutor extends AppCompatActivity {
                 Log.d("RETROFIT", "URL de la llamada al listado por autor: " + url);
             }
         });
-    }
-
-    public void mostrarFrasesPorAutor(List<Frase> listaFrasesPorAutor) {
-        recView = findViewById(R.id.recView);
-        adaptadorFrase = new AdaptadorFrase(listaFrasesPorAutor);
-        recView.setAdapter(adaptadorFrase);
-        recView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recView.setHasFixedSize(true);
-        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 }

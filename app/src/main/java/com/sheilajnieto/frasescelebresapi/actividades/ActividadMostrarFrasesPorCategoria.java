@@ -31,6 +31,7 @@ public class ActividadMostrarFrasesPorCategoria extends AppCompatActivity {
     private int idCategoriaSeleccionada;
     private List<Frase> listaFrasesPorCategoria;
     private IApiService apiService;
+    private AdaptadorFrase adaptador;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +40,13 @@ public class ActividadMostrarFrasesPorCategoria extends AppCompatActivity {
         idCategoriaSeleccionada = getIntent().getIntExtra("idCategoriaSeleccionada", 0);
         Log.d("CATEGORIA", "idCategoriaSeleccionada: " + idCategoriaSeleccionada);
         apiService = RestClient.getApiServiceInstance();
+
+        recView = findViewById(R.id.recView);
+        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recView.setHasFixedSize(true);
+        adaptador = new AdaptadorFrase(listaFrasesPorCategoria);
+        recView.setAdapter(adaptador);
 
         obtenerFrasesPorCategoria(idCategoriaSeleccionada);
 
@@ -51,7 +59,7 @@ public class ActividadMostrarFrasesPorCategoria extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     listaFrasesPorCategoria = response.body();
                     Log.d("FRASES OBTENIDAS DE CATEGORIA", "Cantidad: " + listaFrasesPorCategoria.size());
-                    mostrarFrasesPorCategoria(listaFrasesPorCategoria);
+                    adaptador.setData(listaFrasesPorCategoria);
                 } else {
                     Log.d("FRASES OBTENIDAS DE CATEGORIA", "Error al obtener las frases de la categoria: " + response.message());
                 }
@@ -63,16 +71,5 @@ public class ActividadMostrarFrasesPorCategoria extends AppCompatActivity {
             }
         });
 
-
-    }
-
-    public void mostrarFrasesPorCategoria(List<Frase> listaFrasesPorCategoria) {
-        obtenerFrasesPorCategoria(idCategoriaSeleccionada);
-        recView = findViewById(R.id.recView);
-        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recView.setHasFixedSize(true);
-        AdaptadorFrase adaptador = new AdaptadorFrase(listaFrasesPorCategoria);
-        recView.setAdapter(adaptador);
     }
 }

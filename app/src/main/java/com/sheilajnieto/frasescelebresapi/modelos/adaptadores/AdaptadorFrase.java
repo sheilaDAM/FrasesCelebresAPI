@@ -20,10 +20,16 @@ import java.util.List;
 
 public class AdaptadorFrase extends RecyclerView.Adapter<AdaptadorFrase.ListViewHolder> {
 
-    private final List<Frase> frases;
+    private List<Frase> frases;
 
     public AdaptadorFrase(List<Frase> frases) {
         this.frases = frases;
+
+    }
+
+    public void setData(List<Frase> frases) {
+        this.frases = frases;
+        notifyDataSetChanged();
 
     }
 
@@ -43,6 +49,9 @@ public class AdaptadorFrase extends RecyclerView.Adapter<AdaptadorFrase.ListView
 
     @Override
     public int getItemCount() {
+        if (frases == null) {
+            return 0;
+        }
         return frases.size();
     }
 
@@ -62,7 +71,5 @@ public class AdaptadorFrase extends RecyclerView.Adapter<AdaptadorFrase.ListView
             tvFrase.setText(frase.getTexto());
 
         }
-
-
     }
 }

@@ -26,10 +26,10 @@ public interface IApiService {
     @GET("categoria/all")
     public Call<List<Categoria>> obtenerCategorias();
 
-    @GET("frase/autor/1/{id}")
+    @GET("frase/autor/{id}")
     public Call<List<Frase>> obtenerFrasesPorAutor(@Path("id") int idAutor);
 
-    @GET("categoria/{id}")
+    @GET("frase/categoria/{id}")
     public Call<List<Frase>> obtenerFrasesPorCategoria(@Path("id") int id);
 
     @GET("frase/dia/{fecha}")

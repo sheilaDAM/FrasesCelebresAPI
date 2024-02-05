@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestClient {
 
     private static IApiService apiInstance;
-    private static final String BASE_URL = "http://frases.germangascon.com/"; //url base de la api
+    private static final String BASE_URL = "http://192.168.50.145:8082"; //url base de la api
 
     //constructor privado para que no se puedan tener objetos de este tipo
     private RestClient() {
