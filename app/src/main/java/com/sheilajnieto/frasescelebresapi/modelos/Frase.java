@@ -6,6 +6,8 @@ package com.sheilajnieto.frasescelebresapi.modelos;/*
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class Frase implements Parcelable {
 
     private int id;
@@ -13,6 +15,8 @@ public class Frase implements Parcelable {
     private String fechaProgramada;
     private Autor autor;
     private Categoria categoria;
+    private List<Frase> frases;
+
 
     public Frase(int id, String texto, String fechaProgramada, Autor autor, Categoria categoria) {
         this.id = id;
@@ -40,6 +44,10 @@ public class Frase implements Parcelable {
 
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public List<Frase> getFrases() {
+        return frases;
     }
 
     // ------- CÓDIGO PARA IMPLEMENTAR PARCELABLE -------

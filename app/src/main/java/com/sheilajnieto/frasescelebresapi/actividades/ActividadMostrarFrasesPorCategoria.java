@@ -37,7 +37,7 @@ public class ActividadMostrarFrasesPorCategoria extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container);
         idCategoriaSeleccionada = getIntent().getIntExtra("idCategoriaSeleccionada", 0);
-
+        Log.d("CATEGORIA", "idCategoriaSeleccionada: " + idCategoriaSeleccionada);
         apiService = RestClient.getApiServiceInstance();
 
         obtenerFrasesPorCategoria(idCategoriaSeleccionada);
@@ -52,24 +52,27 @@ public class ActividadMostrarFrasesPorCategoria extends AppCompatActivity {
                     listaFrasesPorCategoria = response.body();
                     Log.d("FRASES OBTENIDAS DE CATEGORIA", "Cantidad: " + listaFrasesPorCategoria.size());
                     mostrarFrasesPorCategoria(listaFrasesPorCategoria);
+                } else {
+                    Log.d("FRASES OBTENIDAS DE CATEGORIA", "Error al obtener las frases de la categoria: " + response.message());
                 }
             }
+
             @Override
             public void onFailure(Call<List<Frase>> call, Throwable t) {
                 Log.d("FRASES OBTENIDAS DE CATEGORIA", "Error al obtener las frases de la categoria: " + t.getMessage());
             }
         });
 
+
     }
 
-    public void mostrarFrasesPorCategoria(List<Frase> listaFrasesPorAutor) {
+    public void mostrarFrasesPorCategoria(List<Frase> listaFrasesPorCategoria) {
         obtenerFrasesPorCategoria(idCategoriaSeleccionada);
         recView = findViewById(R.id.recView);
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recView.setHasFixedSize(true);
-
-        AdaptadorFrase adaptador = new AdaptadorFrase(listaFrasesPorAutor);
+        AdaptadorFrase adaptador = new AdaptadorFrase(listaFrasesPorCategoria);
         recView.setAdapter(adaptador);
     }
 }
